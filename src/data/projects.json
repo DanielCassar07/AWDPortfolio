@@ -1,0 +1,12 @@
+[
+  {
+    "id": "budget-app",
+    "title": "Budgeting App",
+    "description": "Budgeting app built with React, TypeScript, and Redux Toolkit.",
+    "tags": ["React", "Redux", "TypeScript"],
+    "liveUrl": "https://budget-ct1ax11rb-daniels-projects-2b93c5dc.vercel.app/",
+    "repoUrl": "https://github.com/DanielCassar07/BudgetApp",
+    "year": 2025
+  }
+ 
+]
