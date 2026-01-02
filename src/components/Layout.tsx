@@ -3,10 +3,15 @@ import Navbar from "./Navbar";
 
 export default function Layout() {
   return (
-    <div style={{ padding: 16 }}>
-      <h1>Portfolio</h1>
+    <div className="container">
       <Navbar />
-      <Outlet />
+      <main>
+        <Outlet />
+        <div className="footer">
+          <div className="hr" />
+          © {new Date().getFullYear()} Daniel Cassar — Built with React + TypeScript
+        </div>
+      </main>
     </div>
   );
 }

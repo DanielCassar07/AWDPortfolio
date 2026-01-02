@@ -1,7 +1,7 @@
 [
   {
     "id": "budget-app",
-    "title": "Budgeting App",
+    "title": "Budgeting Buddy",
     "description": "Budgeting app built with React, TypeScript, and Redux Toolkit.",
     "tags": ["React", "Redux", "TypeScript"],
     "liveUrl": "https://budget-ct1ax11rb-daniels-projects-2b93c5dc.vercel.app/",

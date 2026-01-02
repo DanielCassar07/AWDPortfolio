@@ -1,18 +1,29 @@
 import { NavLink } from "react-router-dom";
 
-const linkStyle = ({ isActive }: { isActive: boolean }) => ({
-  marginRight: 12,
-  textDecoration: "none",
-  fontWeight: isActive ? 700 : 400,
-});
-
 export default function Navbar() {
   return (
-    <nav aria-label="Main navigation" style={{ marginBottom: 16 }}>
-      <NavLink to="/" end style={linkStyle}>Home</NavLink>
-      <NavLink to="/about" style={linkStyle}>About</NavLink>
-      <NavLink to="/projects" style={linkStyle}>Projects</NavLink>
-      <NavLink to="/contact" style={linkStyle}>Contact</NavLink>
-    </nav>
+    <div className="topbar">
+      <div className="nav">
+        <div className="brand">
+          <span>Daniel Cassar</span>
+          <span className="pill">React • TypeScript</span>
+        </div>
+
+        <div className="links">
+          <NavLink to="/" end className={({ isActive }) => `navlink ${isActive ? "active" : ""}`}>
+            Home
+          </NavLink>
+          <NavLink to="/about" className={({ isActive }) => `navlink ${isActive ? "active" : ""}`}>
+            About
+          </NavLink>
+          <NavLink to="/projects" className={({ isActive }) => `navlink ${isActive ? "active" : ""}`}>
+            Projects
+          </NavLink>
+          <NavLink to="/contact" className={({ isActive }) => `navlink ${isActive ? "active" : ""}`}>
+            Contact
+          </NavLink>
+        </div>
+      </div>
+    </div>
   );
 }

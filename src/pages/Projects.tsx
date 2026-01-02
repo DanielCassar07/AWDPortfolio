@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSortMode } from "../features/projects/projectsSlice";
 import type { Project } from "../features/projects/types";
@@ -20,41 +19,39 @@ export default function Projects() {
       : items;
 
     const sorted = [...base];
-    if (sort === "az") {
-      sorted.sort((a, b) => a.title.localeCompare(b.title));
-    } else {
-      // newest
-      sorted.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
-    }
+    if (sort === "az") sorted.sort((a, b) => a.title.localeCompare(b.title));
+    else sorted.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
 
     return sorted;
   }, [items, query, sort]);
 
   return (
-    <section>
-      <h2>Projects</h2>
+    <section className="card section">
+      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+        <div>
+          <h2 className="h2" style={{ marginBottom: 6 }}>Projects</h2>
+          <p className="muted" style={{ marginTop: 0 }}>
+            A selection of my work. Click a project to view details.
+          </p>
+        </div>
+      </div>
 
       {/* Controls */}
-      <div
-        style={{
-          display: "flex",
-          gap: 12,
-          flexWrap: "wrap",
-          marginBottom: 16,
-        }}
-      >
-        <label>
-          Search:{" "}
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
+        <div style={{ minWidth: 240, flex: "1 1 240px" }}>
+          <label className="muted" style={{ fontSize: 12 }}>Search</label>
           <input
+            className="input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search title or tags..."
           />
-        </label>
+        </div>
 
-        <label>
-          Sort:{" "}
+        <div style={{ width: 180 }}>
+          <label className="muted" style={{ fontSize: 12 }}>Sort</label>
           <select
+            className="select"
             value={sort}
             onChange={(e) =>
               dispatch(setSortMode(e.target.value as "newest" | "az"))
@@ -63,43 +60,43 @@ export default function Projects() {
             <option value="newest">Newest</option>
             <option value="az">A → Z</option>
           </select>
-        </label>
+        </div>
       </div>
 
-      {/* List */}
-      {filtered.length === 0 ? (
-        <p>No projects found. Check your src/data/projects.json.</p>
-      ) : (
-        <ul style={{ paddingLeft: 18 }}>
-          {filtered.map((p: Project) => (
-            <li key={p.id} style={{ marginBottom: 14 }}>
-              <strong>{p.title}</strong>
-              <div>{p.description}</div>
+      <div style={{ marginTop: 16 }}>
+        {filtered.length === 0 ? (
+          <p className="muted">No projects found. Check your src/data/projects.json.</p>
+        ) : (
+          <div className="projectsGrid">
+            {filtered.map((p: Project) => (
+              <article key={p.id} className="card section" style={{ padding: 18 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                  <h3 style={{ margin: 0 }}>{p.title}</h3>
+                  {p.year ? <span className="muted">{p.year}</span> : null}
+                </div>
 
-              <div style={{ fontSize: 12, opacity: 0.8 }}>
-                {p.tags.join(" • ")}
-                {p.year ? ` • ${p.year}` : ""}
-              </div>
+                <p className="muted" style={{ lineHeight: 1.6 }}>
+                  {p.description}
+                </p>
 
-              <div style={{ marginTop: 6 }}>
-                <Link to={`/projects/${p.id}`}>Details</Link>
-                {" · "}
-                <a href={p.liveUrl} target="_blank" rel="noreferrer">
-                  Live
-                </a>
-                {p.repoUrl ? (
-                  <>
-                    {" · "}
-                    <a href={p.repoUrl} target="_blank" rel="noreferrer">
-                      Repo
-                    </a>
-                  </>
-                ) : null}
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+                <div className="badges">
+                  {p.tags.map((t) => (
+                    <span key={t} className="badge">{t}</span>
+                  ))}
+                </div>
+
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 }}>
+                  <a className="btn primary" href={`/projects/${p.id}`}>Details</a>
+                  <a className="btn" href={p.liveUrl} target="_blank" rel="noreferrer">Live</a>
+                  {p.repoUrl ? (
+                    <a className="btn" href={p.repoUrl} target="_blank" rel="noreferrer">Repo</a>
+                  ) : null}
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   );
 }
