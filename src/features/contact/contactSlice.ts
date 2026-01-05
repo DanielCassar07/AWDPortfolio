@@ -1,64 +1,90 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { submitContact } from "./contactThunks";
+import { sendContactForm } from "./contactThunks";
+import type { ContactErrors, ContactFormValues, ContactStatus } from "./types";
 
-export type ContactFields = {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-};
-
-export type ContactState = ContactFields & {
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
+type ContactState = {
+  values: ContactFormValues;
+  errors: ContactErrors;
+  status: ContactStatus;
+  serverError: string | null;
+  successMessage: string | null;
 };
 
 const initialState: ContactState = {
-  name: "",
-  email: "",
-  subject: "",
-  message: "",
+  values: {
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  },
+  errors: {},
   status: "idle",
-  error: null,
+  serverError: null,
+  successMessage: null,
 };
 
 const contactSlice = createSlice({
   name: "contact",
   initialState,
   reducers: {
-    setField(
+    setField: (
       state,
-      action: PayloadAction<{ key: keyof ContactFields; value: string }>
-    ) {
-      // all fields are strings so this is safe + keeps TS happy
-      (state[action.payload.key] as string) = action.payload.value;
+      action: PayloadAction<{ field: keyof ContactFormValues; value: string }>
+    ) => {
+      const { field, value } = action.payload;
+      state.values[field] = value;
+
+      // clear field error as user types
+      if (state.errors[field]) delete state.errors[field];
+
+      // clear status messages while editing
+      state.successMessage = null;
+      state.serverError = null;
     },
-    resetForm(state) {
-      state.name = "";
-      state.email = "";
-      state.subject = "";
-      state.message = "";
+
+    setErrors: (state, action: PayloadAction<ContactErrors>) => {
+      state.errors = action.payload;
+    },
+
+    resetForm: (state) => {
+      state.values = initialState.values;
+      state.errors = {};
       state.status = "idle";
-      state.error = null;
+      state.serverError = null;
+      state.successMessage = null;
+    },
+
+    clearStatusMessages: (state) => {
+      state.serverError = null;
+      state.successMessage = null;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(submitContact.pending, (state) => {
-      state.status = "loading";
-      state.error = null;
-    });
+    builder
+      .addCase(sendContactForm.pending, (state) => {
+        state.status = "loading";
+        state.serverError = null;
+        state.successMessage = null;
+      })
+      .addCase(sendContactForm.fulfilled, (state) => {
+        state.status = "succeeded";
+        state.successMessage = "Message sent successfully. I’ll get back to you soon!";
+        state.serverError = null;
 
-    builder.addCase(submitContact.fulfilled, (state) => {
-      state.status = "succeeded";
-    });
-
-    builder.addCase(submitContact.rejected, (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message ?? "Failed to submit";
-    });
+        // optional: clear fields after success
+        state.values = initialState.values;
+        state.errors = {};
+      })
+      .addCase(sendContactForm.rejected, (state, action) => {
+        state.status = "failed";
+        state.serverError = action.payload ?? "Failed to send. Please try again.";
+        state.successMessage = null;
+      });
   },
 });
 
-export const { setField, resetForm } = contactSlice.actions;
+export const { setField, setErrors, resetForm, clearStatusMessages } =
+  contactSlice.actions;
+
 export default contactSlice.reducer;
