@@ -12,6 +12,22 @@
   --max: 1040px;
 }
 
+/* ✅ THE ONLY MERGE NEEDED for Redux theme toggle (safe) */
+:root[data-theme="light"] {
+  --bg: #f5f7ff;
+  --panel: rgba(10, 15, 30, 0.06);
+  --panel-2: rgba(10, 15, 30, 0.09);
+  --border: rgba(10, 15, 30, 0.12);
+  --text: rgba(10, 15, 30, 0.92);
+  --muted: rgba(10, 15, 30, 0.68);
+
+  /* keep your brand colors consistent */
+  --brand: #7c3aed;
+  --brand-2: #22c55e;
+
+  --shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
@@ -578,4 +594,121 @@ main { padding-top: 18px; }
   0% { transform: translateX(-30%); }
   50% { transform: translateX(120%); }
   100% { transform: translateX(-30%); }
+}
+/* =========================
+   NAV: Burger only on small screens
+   (safe patch - add at bottom)
+   ========================= */
+
+/* Desktop: keep your navbar exactly the same */
+.brandRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: auto;
+}
+
+.navToggle {
+  display: none; /* hidden on desktop */
+}
+
+/* Mobile / small iPad: show burger + collapse links */
+@media (max-width: 860px) {
+  .nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .brandRow {
+    width: 100%;
+  }
+
+  .navToggle {
+    display: inline-flex;
+    width: 44px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.05);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navToggle:hover {
+    background: rgba(255,255,255,0.08);
+  }
+
+  .navToggleBars {
+    position: relative;
+    width: 18px;
+    height: 2px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 999px;
+  }
+
+  .navToggleBars::before,
+  .navToggleBars::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 18px;
+    height: 2px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 999px;
+  }
+
+  .navToggleBars::before { top: -6px; }
+  .navToggleBars::after { top: 6px; }
+
+  /* Hide menu until opened */
+  .links {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    gap: 8px;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+  }
+
+  .links.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navlink {
+    width: 100%;
+  }
+}
+/* Theme toggle should be visible on desktop */
+.navToggle {
+  display: inline-flex;
+  width: 44px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.navToggle:hover { background: rgba(255,255,255,0.08); }
+
+/* Burger hidden on desktop, visible on small screens */
+.burger { display: none; }
+
+@media (max-width: 860px) {
+  .burger { display: inline-flex; }
+
+  /* Keep your current mobile behavior: collapse links */
+  .links { display: none; }
+  .links.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
