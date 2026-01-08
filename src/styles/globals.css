@@ -12,7 +12,7 @@
   --max: 1040px;
 }
 
-/* ✅ THE ONLY MERGE NEEDED for Redux theme toggle (safe) */
+/* ✅ Redux theme toggle support */
 :root[data-theme="light"] {
   --bg: #f5f7ff;
   --panel: rgba(10, 15, 30, 0.06);
@@ -21,7 +21,6 @@
   --text: rgba(10, 15, 30, 0.92);
   --muted: rgba(10, 15, 30, 0.68);
 
-  /* keep your brand colors consistent */
   --brand: #7c3aed;
   --brand-2: #22c55e;
 
@@ -205,6 +204,7 @@ main { padding-top: 18px; }
   box-shadow: 0 0 0 4px rgba(124,58,237,0.12);
 }
 .field { display: grid; gap: 6px; margin-bottom: 12px; }
+
 .footer {
   margin-top: 18px;
   padding: 18px 6px;
@@ -213,8 +213,10 @@ main { padding-top: 18px; }
   text-align: center;
   opacity: 0.9;
 }
+
 .hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
-/* ===== HERO (Image 2 style) ===== */
+
+/* ===== HERO ===== */
 .heroCard {
   position: relative;
   overflow: hidden;
@@ -272,7 +274,7 @@ main { padding-top: 18px; }
   font-size: clamp(16px, 2.2vw, 24px);
   color: rgba(124,58,237,0.95);
   font-weight: 700;
-  min-height: 30px; /* stops layout jump while typing */
+  min-height: 30px;
 }
 
 .cursor {
@@ -301,7 +303,6 @@ main { padding-top: 18px; }
   font-size: 14px;
 }
 
-/* glow behind content */
 .heroGlow {
   position: absolute;
   inset: -45%;
@@ -314,7 +315,6 @@ main { padding-top: 18px; }
   z-index: 0;
 }
 
-/* STAR FIELD (bigger + denser) */
 .heroStars {
   position: absolute;
   inset: 0;
@@ -337,7 +337,6 @@ main { padding-top: 18px; }
   to { transform: translate3d(-60px, 80px, 0); }
 }
 
-/* vignette for depth */
 .heroCard::after {
   content: "";
   position: absolute;
@@ -350,16 +349,11 @@ main { padding-top: 18px; }
   z-index: 2;
   pointer-events: none;
 }
-/* ===== ABOUT PAGE ===== */
-.aboutWrap {
-  display: grid;
-  gap: 14px;
-}
 
-.aboutHeader {
-  position: relative;
-  overflow: hidden;
-}
+/* ===== ABOUT PAGE ===== */
+.aboutWrap { display: grid; gap: 14px; }
+
+.aboutHeader { position: relative; overflow: hidden; }
 
 .aboutHeader::after {
   content: "";
@@ -426,9 +420,7 @@ main { padding-top: 18px; }
 }
 
 @media (max-width: 860px) {
-  .aboutGrid {
-    grid-template-columns: 1fr;
-  }
+  .aboutGrid { grid-template-columns: 1fr; }
 }
 
 .aboutCard {
@@ -482,9 +474,7 @@ main { padding-top: 18px; }
   line-height: 1.7;
 }
 
-.aboutCardText p {
-  margin: 0 0 8px 0;
-}
+.aboutCardText p { margin: 0 0 8px 0; }
 
 .aboutList {
   margin: 0;
@@ -500,9 +490,7 @@ main { padding-top: 18px; }
 }
 
 @media (max-width: 520px) {
-  .skillsGrid {
-    grid-template-columns: 1fr;
-  }
+  .skillsGrid { grid-template-columns: 1fr; }
 }
 
 .skillPill {
@@ -516,10 +504,7 @@ main { padding-top: 18px; }
   background: rgba(255,255,255,0.05);
 }
 
-.skillName {
-  font-weight: 800;
-  color: rgba(255,255,255,0.92);
-}
+.skillName { font-weight: 800; color: rgba(255,255,255,0.92); }
 
 .skillLevel {
   font-size: 12px;
@@ -530,10 +515,7 @@ main { padding-top: 18px; }
   color: rgba(255,255,255,0.86);
 }
 
-.aboutCTA {
-  display: grid;
-  gap: 10px;
-}
+.aboutCTA { display: grid; gap: 10px; }
 
 .aboutCTAActions {
   display: flex;
@@ -541,6 +523,7 @@ main { padding-top: 18px; }
   flex-wrap: wrap;
   margin-top: 4px;
 }
+
 .sectionHead { margin-bottom: 14px; }
 
 .formGrid {
@@ -590,39 +573,37 @@ main { padding-top: 18px; }
 }
 
 .tiny { font-size: 12px; }
+
 @keyframes loaderSlide {
   0% { transform: translateX(-30%); }
   50% { transform: translateX(120%); }
   100% { transform: translateX(-30%); }
 }
+
 /* =========================
-   NAV: Burger only on small screens
-   (safe patch - add at bottom)
+   NAV: Burger only on small screens (FINAL - no conflicts)
    ========================= */
 
-/* Desktop: keep your navbar exactly the same */
+/* Your Navbar JSX uses brandRow + navToggle */
 .brandRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  width: auto;
+  width: auto; /* desktop not stretched */
 }
 
-.navToggle {
-  display: none; /* hidden on desktop */
-}
+/* burger hidden on desktop */
+.navToggle { display: none; }
 
-/* Mobile / small iPad: show burger + collapse links */
+/* Mobile / small iPad */
 @media (max-width: 860px) {
   .nav {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .brandRow {
-    width: 100%;
-  }
+  .brandRow { width: 100%; }
 
   .navToggle {
     display: inline-flex;
@@ -635,10 +616,7 @@ main { padding-top: 18px; }
     align-items: center;
     justify-content: center;
   }
-
-  .navToggle:hover {
-    background: rgba(255,255,255,0.08);
-  }
+  .navToggle:hover { background: rgba(255,255,255,0.08); }
 
   .navToggleBars {
     position: relative;
@@ -658,11 +636,10 @@ main { padding-top: 18px; }
     background: rgba(255,255,255,0.85);
     border-radius: 999px;
   }
-
   .navToggleBars::before { top: -6px; }
   .navToggleBars::after { top: 6px; }
 
-  /* Hide menu until opened */
+  /* collapse links */
   .links {
     display: none;
     width: 100%;
@@ -680,11 +657,8 @@ main { padding-top: 18px; }
     align-items: flex-start;
   }
 
-  .navlink {
-    width: 100%;
-  }
+  .navlink { width: 100%; }
 }
-/* Theme toggle should be visible on desktop */
 .navToggle {
   display: inline-flex;
   width: 44px;
@@ -698,17 +672,35 @@ main { padding-top: 18px; }
 }
 .navToggle:hover { background: rgba(255,255,255,0.08); }
 
-/* Burger hidden on desktop, visible on small screens */
-.burger { display: none; }
+/* Burger button: hidden on desktop */
+.burgerToggle { display: none; }
 
+/* Burger only on small screens */
 @media (max-width: 860px) {
-  .burger { display: inline-flex; }
+  .burgerToggle {
+    display: inline-flex;
+    width: 44px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.05);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+  .burgerToggle:hover { background: rgba(255,255,255,0.08); }
 
-  /* Keep your current mobile behavior: collapse links */
+  /* collapse links for burger menu */
   .links { display: none; }
   .links.open {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    gap: 8px;
   }
+  .navlink { width: 100%; }
 }
