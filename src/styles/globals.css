@@ -574,3 +574,8 @@ main { padding-top: 18px; }
 }
 
 .tiny { font-size: 12px; }
+@keyframes loaderSlide {
+  0% { transform: translateX(-30%); }
+  50% { transform: translateX(120%); }
+  100% { transform: translateX(-30%); }
+}
