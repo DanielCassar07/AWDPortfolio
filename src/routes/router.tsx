@@ -1,24 +1,43 @@
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
 import Layout from "../components/Layout";
-import Home from "../pages/Home";
-import About from "../pages/About";
-import Projects from "../pages/Projects";
-import ProjectDetail from "../pages/ProjectDetail";
-import Contact from "../pages/Contact";
 import NotFound from "../pages/NotFound";
+import ErrorBoundary from "../components/ErrorBoundary";
+import PageLoader from "../components/PageLoader";
+
+// Eager-load Home (fast first paint)
+import Home from "../pages/Home";
+
+// Lazy-load the rest (2+ required)
+const About = lazy(() => import("../pages/About"));
+const Projects = lazy(() => import("../pages/Projects"));
+const ProjectDetail = lazy(() => import("../pages/ProjectDetail"));
+const Contact = lazy(() => import("../pages/Contact"));
+
+function withGuards(element: React.ReactNode) {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<PageLoader />}>{element}</Suspense>
+    </ErrorBoundary>
+  );
+}
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    errorElement: <NotFound />,
+    errorElement: <NotFound />, // router-level fallback (route not found / loader errors)
     children: [
       { index: true, element: <Home /> },
-      { path: "about", element: <About /> },
-      { path: "projects", element: <Projects /> },
-      { path: "projects/:projectId", element: <ProjectDetail /> },
-      { path: "contact", element: <Contact /> },
+
+      { path: "about", element: withGuards(<About />) },
+
+      { path: "projects", element: withGuards(<Projects />) },
+      { path: "projects/:projectId", element: withGuards(<ProjectDetail />) },
+
+      { path: "contact", element: withGuards(<Contact />) },
+
       { path: "*", element: <NotFound /> },
     ],
   },
