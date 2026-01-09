@@ -1,21 +1,32 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSortMode } from "../features/projects/projectsSlice";
+import { fetchProjects } from "../features/projects/projectsThunks";
 import type { Project } from "../features/projects/types";
 
 export default function Projects() {
   const dispatch = useAppDispatch();
-  const { items, sort } = useAppSelector((s) => s.projects);
+  const { items, sort, status, error } = useAppSelector((s) => s.projects);
 
   const [query, setQuery] = useState("");
-  const [tag, setTag] = useState<string>("all"); //tag filter
+  const [tag, setTag] = useState<string>("all");
 
-// build dropdown options from your tags
+  // ✅ Load projects once (only if you're using thunk-based loading)
+  useEffect(() => {
+    if (status === "idle") dispatch(fetchProjects());
+  }, [dispatch, status]);
+
+  // ✅ Build dropdown options from tags (stable + safe)
   const allTags = useMemo(() => {
     const set = new Set<string>();
     items.forEach((p) => (p.tags ?? []).forEach((t) => set.add(t)));
     return ["all", ...Array.from(set).sort((a, b) => a.localeCompare(b))];
   }, [items]);
+
+  // ✅ Keep selected tag valid WITHOUT setState in an effect
+  const safeTag = useMemo(() => {
+    return tag === "all" || allTags.includes(tag) ? tag : "all";
+  }, [tag, allTags]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -24,8 +35,8 @@ export default function Projects() {
     let base = [...items];
 
     // 2) filter by tag (if selected)
-    if (tag !== "all") {
-      base = base.filter((p) => (p.tags ?? []).includes(tag));
+    if (safeTag !== "all") {
+      base = base.filter((p) => (p.tags ?? []).includes(safeTag));
     }
 
     // 3) filter by search query
@@ -41,7 +52,7 @@ export default function Projects() {
     else sorted.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
 
     return sorted;
-  }, [items, query, tag, sort]);
+  }, [items, query, safeTag, sort]);
 
   return (
     <section className="card section">
@@ -78,14 +89,14 @@ export default function Projects() {
           />
         </div>
 
-        {/* ✅ NEW: Tag filter */}
+        {/* Tag filter */}
         <div style={{ width: 200 }}>
           <label className="muted" style={{ fontSize: 12 }}>
             Tag
           </label>
           <select
             className="select"
-            value={tag}
+            value={safeTag}
             onChange={(e) => setTag(e.target.value)}
           >
             {allTags.map((t) => (
@@ -114,17 +125,28 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Count */}
-      <p className="muted" style={{ marginTop: 10 }}>
-        Showing <b>{filtered.length}</b> project{filtered.length !== 1 ? "s" : ""}.
-      </p>
+      {/* Status UI */}
+      {status === "loading" ? (
+        <p className="muted" style={{ marginTop: 10 }}>
+          Loading projects…
+        </p>
+      ) : status === "failed" ? (
+        <p className="muted" style={{ marginTop: 10 }}>
+          Failed to load projects: {error ?? "Unknown error"}
+        </p>
+      ) : (
+        <p className="muted" style={{ marginTop: 10 }}>
+          Showing <b>{filtered.length}</b> project
+          {filtered.length !== 1 ? "s" : ""}.
+        </p>
+      )}
 
       <div style={{ marginTop: 16 }}>
-        {filtered.length === 0 ? (
+        {status !== "loading" && status !== "failed" && filtered.length === 0 ? (
           <p className="muted">
             No projects found. Check your src/data/projects.json.
           </p>
-        ) : (
+        ) : status === "loading" || status === "failed" ? null : (
           <div className="projectsGrid">
             {filtered.map((p: Project) => (
               <article
@@ -166,6 +188,7 @@ export default function Projects() {
                   <a className="btn primary" href={`/projects/${p.id}`}>
                     Details
                   </a>
+
                   {p.liveUrl ? (
                     <a
                       className="btn"
@@ -176,6 +199,7 @@ export default function Projects() {
                       Live
                     </a>
                   ) : null}
+
                   {p.repoUrl ? (
                     <a
                       className="btn"

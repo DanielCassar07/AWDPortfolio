@@ -4,8 +4,8 @@ import type { Project } from "./types";
 export const fetchProjects = createAsyncThunk<Project[]>(
   "projects/fetchProjects",
   async () => {
-    const res = await fetch("/src/data/projects.json");
-    if (!res.ok) throw new Error("Failed to load projects");
-    return (await res.json()) as Project[];
+    // stays in src/data and works in dev+build
+    const mod = await import("../../data/projects.json");
+    return mod.default as Project[];
   }
 );
