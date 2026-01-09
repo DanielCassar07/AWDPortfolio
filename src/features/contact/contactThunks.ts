@@ -1,23 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { ContactFormValues } from "./types";
 
-// Mock API submit
-async function submitContact(values: ContactFormValues): Promise<{ ok: true }> {
-  console.log("Contact form submitted:", values); // 👈 now it's used
-  await new Promise((r) => setTimeout(r, 900));
-  return { ok: true };
+function sleep(ms: number) {
+  return new Promise((r) => setTimeout(r, ms));
 }
 
 export const sendContactForm = createAsyncThunk<
-  { ok: true },
+  { message: string },
   ContactFormValues,
   { rejectValue: string }
->("contact/sendContactForm", async (values, { rejectWithValue }) => {
+>("contact/sendContactForm", async (payload, { rejectWithValue }) => {
   try {
-    const res = await submitContact(values);
-    return res;
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : "Something went wrong";
-    return rejectWithValue(msg);
+    // Simulate request (assignment-safe). Replace with real API later if needed.
+    await sleep(800);
+
+    // You can log payload during dev if you want:
+    // console.log("Contact payload:", payload);
+
+    return { message: "Message sent successfully. Thanks!" };
+  } catch {
+    return rejectWithValue("Failed to send message. Please try again.");
   }
-});
+}); 

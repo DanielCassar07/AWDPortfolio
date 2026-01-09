@@ -1,3 +1,5 @@
+export type ContactStatus = "idle" | "loading" | "succeeded" | "failed";
+
 export type ContactFormValues = {
   name: string;
   email: string;
@@ -7,4 +9,10 @@ export type ContactFormValues = {
 
 export type ContactErrors = Partial<Record<keyof ContactFormValues, string>>;
 
-export type ContactStatus = "idle" | "loading" | "succeeded" | "failed";
+export type ContactState = {
+  values: ContactFormValues;
+  errors: ContactErrors;
+  status: ContactStatus;
+  successMessage: string | null;
+  serverError: string | null;
+};
