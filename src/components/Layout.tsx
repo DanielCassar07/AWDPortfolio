@@ -5,7 +5,7 @@ import ThemeSync from "./ThemeSync"; // ✅ add this
 export default function Layout() {
   return (
     <div className="container">
-      <ThemeSync /> {/* ✅ add this */}
+      <ThemeSync /> 
       <Navbar />
       <main>
         <Outlet />
