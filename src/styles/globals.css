@@ -12,7 +12,7 @@
   --max: 1040px;
 }
 
-/* ✅ Redux theme toggle support */
+/* Redux theme toggle support */
 :root[data-theme="light"] {
   --bg: #f5f7ff;
   --panel: rgba(10, 15, 30, 0.06);
@@ -580,11 +580,8 @@ main { padding-top: 18px; }
   100% { transform: translateX(-30%); }
 }
 
-/* =========================
-   NAV: Burger only on small screens (FINAL - no conflicts)
-   ========================= */
-
-/* Your Navbar JSX uses brandRow + navToggle */
+/* NAV: Burger only on small screens (FINAL - no conflicts)*/
+/*  Navbar JSX uses brandRow + navToggle */
 .brandRow {
   display: flex;
   align-items: center;
