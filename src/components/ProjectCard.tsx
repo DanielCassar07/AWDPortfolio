@@ -1,25 +1,43 @@
+import { memo } from "react";
 import type { Project } from "../features/projects/types";
 
-export default function ProjectCard({ project }: { project: Project }) {
+type Props = {
+  project: Project;
+};
+
+function ProjectCard({ project: p }: Props) {
   return (
-    <article style={{ border: "1px solid #d1d5db", borderRadius: 12, padding: 14 }}>
+    <article className="card section" style={{ padding: 18 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-        <h3 style={{ margin: 0 }}>{project.title}</h3>
-        {project.year ? <span style={{ opacity: 0.7 }}>{project.year}</span> : null}
+        <h3 style={{ margin: 0 }}>{p.title}</h3>
+        {p.year ? <span className="muted">{p.year}</span> : null}
       </div>
 
-      <p style={{ opacity: 0.8 }}>{project.description}</p>
+      <p className="muted" style={{ lineHeight: 1.6 }}>
+        {p.description}
+      </p>
 
-      <div style={{ fontSize: 12, opacity: 0.8 }}>
-        {project.tags.join(" • ")}
+      <div className="badges">
+        {(p.tags ?? []).map((t) => (
+          <span key={t} className="badge">
+            {t}
+          </span>
+        ))}
       </div>
 
-      <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
-        <a href={project.liveUrl} target="_blank" rel="noreferrer">
-          Live
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 }}>
+        <a className="btn primary" href={`/projects/${p.id}`}>
+          Details
         </a>
-        {project.repoUrl ? (
-          <a href={project.repoUrl} target="_blank" rel="noreferrer">
+
+        {p.liveUrl ? (
+          <a className="btn" href={p.liveUrl} target="_blank" rel="noreferrer">
+            Live
+          </a>
+        ) : null}
+
+        {p.repoUrl ? (
+          <a className="btn" href={p.repoUrl} target="_blank" rel="noreferrer">
             Repo
           </a>
         ) : null}
@@ -27,3 +45,5 @@ export default function ProjectCard({ project }: { project: Project }) {
     </article>
   );
 }
+
+export default memo(ProjectCard);
