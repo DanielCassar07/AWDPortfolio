@@ -3,16 +3,19 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "scripts": {
+  "scripts": {
   "dev": "vite",
   "build": "tsc -b && vite build",
   "lint": "eslint .",
   "preview": "vite preview",
   "storybook": "storybook dev -p 6006",
   "build-storybook": "storybook build",
+
   "test": "vitest --config vitest.unit.config.ts",
   "test:watch": "vitest --config vitest.unit.config.ts --watch",
-  "test:ui": "vitest --ui --config vitest.unit.config.ts"
+  "test:ui": "vitest --ui --config vitest.unit.config.ts",
+  "test:run": "vitest run --config vitest.unit.config.ts",
+  "test:coverage": "vitest run --coverage --config vitest.unit.config.ts"
 },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -34,6 +37,7 @@
     "@storybook/react-vite": "^10.1.10",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",

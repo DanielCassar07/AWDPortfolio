@@ -9,7 +9,7 @@ export const sendContactForm = createAsyncThunk<
   { message: string },
   ContactFormValues,
   { rejectValue: string }
->("contact/sendContactForm", async (payload, { rejectWithValue }) => {
+>("contact/sendContactForm", async (_payload, { rejectWithValue }) => {
   try {
     // Simulate request (assignment-safe). Replace with real API later if needed.
     await sleep(800);

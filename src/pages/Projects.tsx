@@ -23,7 +23,7 @@ export default function Projects() {
     return ["all", ...Array.from(set).sort((a, b) => a.localeCompare(b))];
   }, [items]);
 
-  // ✅ Avoid “setState in effect” warning by clamping tag without effects
+  // Avoid “setState in effect” warning by clamping tag without effects
   const safeTag = allTags.includes(tag) ? tag : "all";
 
   const filtered = useMemo(() => {
