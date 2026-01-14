@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, act } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -12,6 +12,24 @@ function makeStore() {
     reducer: { contact: contactReducer },
   });
 }
+
+function mockMxFetchOk() {
+  // Return a real Response object so TypeScript + ESLint are happy (no `any`)
+  const body = { Answer: [{ data: "10 mail.example.com" }] };
+
+  const fetchMock: typeof fetch = vi.fn(async () => {
+    return new Response(JSON.stringify(body), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  });
+
+  vi.stubGlobal("fetch", fetchMock);
+}
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe("Contact page (form validation)", () => {
   it("shows validation errors when submitting empty form", async () => {
@@ -26,7 +44,10 @@ describe("Contact page (form validation)", () => {
 
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
-    expect(screen.getByText(/please fix the highlighted fields/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/please fix the highlighted fields/i)
+    ).toBeInTheDocument();
+
     expect(screen.getByText(/name is required/i)).toBeInTheDocument();
     expect(screen.getByText(/email is required/i)).toBeInTheDocument();
     expect(screen.getByText(/subject is required/i)).toBeInTheDocument();
@@ -50,17 +71,20 @@ describe("Contact page (form validation)", () => {
 
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
-    expect(screen.getByText(/name must contain only letters/i)).toBeInTheDocument();
-    expect(screen.getByText(/enter a valid email address/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/name can only contain letters/i)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/enter a valid email address/i)
+    ).toBeInTheDocument();
   });
 
   it("submits successfully with valid values and shows success banner", async () => {
-    vi.useFakeTimers();
-    const store = makeStore();
+    mockMxFetchOk();
 
-    const user = userEvent.setup({
-      advanceTimers: (ms) => vi.advanceTimersByTime(ms),
-    });
+    const store = makeStore();
+    const user = userEvent.setup();
 
     render(
       <Provider store={store}>
@@ -75,15 +99,9 @@ describe("Contact page (form validation)", () => {
 
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
-    // thunk simulates delay; fast-forward it
-    await act(async () => {
-      vi.runAllTimers();
-    });
-
+    // Your thunk waits ~800ms, so wait for the success message to appear.
     expect(
-      await screen.findByText(/message sent!/i)
+      await screen.findByText(/message sent successfully/i, undefined, { timeout: 3000 })
     ).toBeInTheDocument();
-
-    vi.useRealTimers();
   });
 });

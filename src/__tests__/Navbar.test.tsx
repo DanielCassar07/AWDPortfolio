@@ -36,13 +36,13 @@ describe("Navbar (routing behaviour)", () => {
     );
 
     const home = screen.getByRole("link", { name: /home/i });
-    expect(home.className).toContain("active");
+    expect(home).toHaveClass("active");
 
     await user.click(screen.getByRole("link", { name: /about/i }));
-    expect(screen.getByTestId("location").textContent).toBe("/about");
+    expect(screen.getByTestId("location")).toHaveTextContent("/about");
 
     const about = screen.getByRole("link", { name: /about/i });
-    expect(about.className).toContain("active");
+    expect(about).toHaveClass("active");
   });
 
   it("opens and closes the mobile menu state when burger is clicked", async () => {
@@ -57,13 +57,19 @@ describe("Navbar (routing behaviour)", () => {
       </Provider>
     );
 
-    const nav = screen.getByRole("navigation", { name: /primary/i });
-    expect(nav.className).not.toContain("open");
+    // Re-query nav each time to avoid stale element references after re-render
+    expect(
+      screen.getByRole("navigation", { name: /primary/i })
+    ).not.toHaveClass("open");
 
     await user.click(screen.getByRole("button", { name: /open menu/i }));
-    expect(nav.className).toContain("open");
+    expect(
+      screen.getByRole("navigation", { name: /primary/i })
+    ).toHaveClass("open");
 
     await user.click(screen.getByRole("button", { name: /close menu/i }));
-    expect(nav.className).not.toContain("open");
+    expect(
+      screen.getByRole("navigation", { name: /primary/i })
+    ).not.toHaveClass("open");
   });
 });

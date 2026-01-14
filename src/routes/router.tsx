@@ -27,14 +27,20 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    errorElement: <NotFound />, // router-level fallback (route not found / loader errors)
+    errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
 
       { path: "about", element: withGuards(<About />) },
 
-      { path: "projects", element: withGuards(<Projects />) },
-      { path: "projects/:projectId", element: withGuards(<ProjectDetail />) },
+      // ✅ Nested routing: /projects + /projects/:projectId
+      {
+        path: "projects",
+        element: withGuards(<Projects />),
+        children: [
+          { path: ":projectId", element: withGuards(<ProjectDetail />) },
+        ],
+      },
 
       { path: "contact", element: withGuards(<Contact />) },
 

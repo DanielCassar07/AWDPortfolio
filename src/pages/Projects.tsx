@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSortMode } from "../features/projects/projectsSlice";
 import { fetchProjects } from "../features/projects/projectsThunks";
@@ -50,9 +51,18 @@ export default function Projects() {
 
   return (
     <section className="card section">
-      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
         <div>
-          <h2 className="h2" style={{ marginBottom: 6 }}>Projects</h2>
+          <h2 className="h2" style={{ marginBottom: 6 }}>
+            Projects
+          </h2>
           <p className="muted" style={{ marginTop: 0 }}>
             A selection of my work. Click a project to view details.
           </p>
@@ -62,7 +72,9 @@ export default function Projects() {
       {/* Controls */}
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
         <div style={{ minWidth: 240, flex: "1 1 240px" }}>
-          <label className="muted" style={{ fontSize: 12 }}>Search</label>
+          <label className="muted" style={{ fontSize: 12 }}>
+            Search
+          </label>
           <input
             className="input"
             value={query}
@@ -72,7 +84,9 @@ export default function Projects() {
         </div>
 
         <div style={{ width: 200 }}>
-          <label className="muted" style={{ fontSize: 12 }}>Tag</label>
+          <label className="muted" style={{ fontSize: 12 }}>
+            Tag
+          </label>
           <select
             className="select"
             value={safeTag}
@@ -87,11 +101,15 @@ export default function Projects() {
         </div>
 
         <div style={{ width: 180 }}>
-          <label className="muted" style={{ fontSize: 12 }}>Sort</label>
+          <label className="muted" style={{ fontSize: 12 }}>
+            Sort
+          </label>
           <select
             className="select"
             value={sort}
-            onChange={(e) => dispatch(setSortMode(e.target.value as "newest" | "az"))}
+            onChange={(e) =>
+              dispatch(setSortMode(e.target.value as "newest" | "az"))
+            }
           >
             <option value="newest">Newest</option>
             <option value="az">A → Z</option>
@@ -101,14 +119,17 @@ export default function Projects() {
 
       {/* Status */}
       {status === "loading" ? (
-        <p className="muted" style={{ marginTop: 10 }}>Loading projects…</p>
+        <p className="muted" style={{ marginTop: 10 }}>
+          Loading projects…
+        </p>
       ) : status === "failed" ? (
         <p className="muted" style={{ marginTop: 10 }}>
           Failed to load projects: {error ?? "Unknown error"}
         </p>
       ) : (
         <p className="muted" style={{ marginTop: 10 }}>
-          Showing <b>{filtered.length}</b> project{filtered.length !== 1 ? "s" : ""}.
+          Showing <b>{filtered.length}</b> project{filtered.length !== 1 ? "s" : ""}
+          .
         </p>
       )}
 
@@ -122,6 +143,11 @@ export default function Projects() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* ✅ This is what makes nested routing work */}
+      <div style={{ marginTop: 24 }}>
+        <Outlet />
       </div>
     </section>
   );
