@@ -16,6 +16,15 @@
     "liveUrl": "https://helixoutriders.vercel.app/",
     "repoUrl": "https://github.com/RodneyMcast/helix-outriders",
     "year": 2025
+  },
+    {
+    "id": "assignment-checklist",
+    "title": "Assignment Checklist",
+    "description": "An assignment tracking page made with React and Vite.",
+    "tags": ["React", "Vite", "CSS"],
+    "liveUrl": "https://assignmentchecklist.vercel.app/",
+    "repoUrl": "https://github.com/DanielCassar07/assignmentchecklist",
+    "year": 2025
   }
  
 ]
