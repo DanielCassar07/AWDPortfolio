@@ -1,26 +1,21 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Provider } from "react-redux";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter } from "react-router-dom";
-
 import Navbar from "../components/Navbar";
-import { store } from "../app/store";
 
-const meta: Meta<typeof Navbar> = {
+const meta = {
   title: "Components/Navbar",
   component: Navbar,
   decorators: [
     (Story) => (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <Story />
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={["/projects"]}>
+        <Story />
+      </MemoryRouter>
     ),
   ],
-};
+} satisfies Meta<typeof Navbar>;
 
 export default meta;
 
-type Story = StoryObj<typeof Navbar>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
