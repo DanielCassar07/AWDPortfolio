@@ -27,7 +27,6 @@ const contactSlice = createSlice({
       const { field, value } = action.payload;
       state.values[field] = value;
 
-      // nice UX: clear error when user edits field
       if (state.errors[field]) delete state.errors[field];
     },
 
@@ -66,8 +65,7 @@ const contactSlice = createSlice({
       })
       .addCase(sendContactForm.rejected, (state, action) => {
         state.status = "failed";
-        state.serverError =
-          action.payload ?? "Failed to send message. Please try again.";
+        state.serverError = action.payload ?? "Failed to send message. Please try again.";
       });
   },
 });

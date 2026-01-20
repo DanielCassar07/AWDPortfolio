@@ -5,12 +5,7 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary";
 };
 
-export default function Button({
-  children,
-  variant = "primary",
-  style,
-  ...rest
-}: Props) {
+export default function Button({ children, variant = "primary", style, ...rest }: Props) {
   const base: React.CSSProperties = {
     padding: "10px 12px",
     borderRadius: 10,

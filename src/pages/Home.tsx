@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 type Star = {
   id: number;
-  left: number;   // %
-  top: number;    // %
-  size: number;   // px
-  dur: number;    // s
-  delay: number;  // s
+  left: number; // %
+  top: number; // %
+  size: number; // px
+  dur: number; // s
+  delay: number; // s
   opacity: number;
 };
 

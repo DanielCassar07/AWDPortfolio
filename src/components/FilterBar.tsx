@@ -22,7 +22,10 @@ export default function FilterBar({
 
       <label>
         Sort:{" "}
-        <select value={sort} onChange={(e) => onSortChange(e.target.value as "newest" | "az")}>
+        <select
+          value={sort}
+          onChange={(e) => onSortChange(e.target.value as "newest" | "az")}
+        >
           <option value="newest">Newest</option>
           <option value="az">A → Z</option>
         </select>

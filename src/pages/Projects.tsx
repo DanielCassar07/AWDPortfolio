@@ -107,9 +107,7 @@ export default function Projects() {
           <select
             className="select"
             value={sort}
-            onChange={(e) =>
-              dispatch(setSortMode(e.target.value as "newest" | "az"))
-            }
+            onChange={(e) => dispatch(setSortMode(e.target.value as "newest" | "az"))}
           >
             <option value="newest">Newest</option>
             <option value="az">A → Z</option>
@@ -128,8 +126,7 @@ export default function Projects() {
         </p>
       ) : (
         <p className="muted" style={{ marginTop: 10 }}>
-          Showing <b>{filtered.length}</b> project{filtered.length !== 1 ? "s" : ""}
-          .
+          Showing <b>{filtered.length}</b> project{filtered.length !== 1 ? "s" : ""}.
         </p>
       )}
 
@@ -145,7 +142,7 @@ export default function Projects() {
         )}
       </div>
 
-      {/* ✅ This is what makes nested routing work */}
+      {/* nested routing working */}
       <div style={{ marginTop: 24 }}>
         <Outlet />
       </div>

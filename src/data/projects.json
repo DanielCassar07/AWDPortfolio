@@ -17,7 +17,7 @@
     "repoUrl": "https://github.com/RodneyMcast/helix-outriders.",
     "year": 2025
   },
-    {
+  {
     "id": "assignment-checklist",
     "title": "Assignment Checklist",
     "description": "An assignment tracking page made with React and Vite.",
@@ -26,5 +26,4 @@
     "repoUrl": "https://github.com/DanielCassar07/assignmentchecklist",
     "year": 2025
   }
- 
 ]

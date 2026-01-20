@@ -35,9 +35,7 @@ export default class ErrorBoundary extends React.Component<Props, State> {
 
               <details style={{ marginTop: 12, opacity: 0.9 }}>
                 <summary style={{ cursor: "pointer" }}>Technical details</summary>
-                <pre style={{ whiteSpace: "pre-wrap" }}>
-                  {this.state.error?.message}
-                </pre>
+                <pre style={{ whiteSpace: "pre-wrap" }}>{this.state.error?.message}</pre>
               </details>
             </div>
           </div>

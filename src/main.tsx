@@ -7,7 +7,6 @@ import { router } from "./routes/router";
 import { store } from "./app/store";
 import "./styles/globals.css";
 
-
 const savedTheme = localStorage.getItem("theme");
 document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
 

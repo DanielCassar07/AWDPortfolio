@@ -17,23 +17,18 @@ import { sendContactForm } from "../features/contact/contactThunks";
 import type { ContactErrors, ContactFormValues } from "../features/contact/types";
 
 /**
- * ✅ Name rule:
+ * Name rule:
  * - letters (including accents), spaces, hyphens, apostrophes
  * - at least 2 chars
  */
 const NAME_REGEX = /^[a-zA-ZÀ-ÿ' -]{2,}$/;
 
 /**
- * ✅ Email rule:
+ * Email rule:
  * - basic format check (fast + reliable)
  */
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/**
- * ✅ Optional stronger check:
- * checks if the email domain has MX records (can receive email)
- * Uses Google's DNS over HTTPS endpoint.
- */
 async function hasMxRecord(domain: string): Promise<boolean> {
   try {
     const res = await fetch(
@@ -44,8 +39,8 @@ async function hasMxRecord(domain: string): Promise<boolean> {
     const data = (await res.json()) as { Answer?: unknown[] };
     return Array.isArray(data.Answer) && data.Answer.length > 0;
   } catch {
-    // If DNS check fails (offline / blocked), we don't hard fail.
-    // We fallback to format validation only.
+    // If DNS check fails (offline / blocked), don't hard fail.
+    // fallback to format validation only.
     return true;
   }
 }
@@ -53,15 +48,14 @@ async function hasMxRecord(domain: string): Promise<boolean> {
 function validate(values: ContactFormValues): ContactErrors {
   const errors: ContactErrors = {};
 
-  // ✅ Name validation
+  //  Name validation
   const name = values.name.trim();
   if (!name) errors.name = "Name is required.";
   else if (!NAME_REGEX.test(name)) {
-    errors.name =
-      "Name can only contain letters, spaces, hyphens, and apostrophes.";
+    errors.name = "Name can only contain letters, spaces, hyphens, and apostrophes.";
   }
 
-  // ✅ Email validation (format only here — MX check is async in submit)
+  //  Email validation (format only here — MX check is async in submit)
   const email = values.email.trim();
   if (!email) errors.email = "Email is required.";
   else if (!EMAIL_REGEX.test(email)) {
@@ -104,7 +98,6 @@ export default function Contact() {
 
       dispatch(setField({ field, value }));
 
-      // OPTIONAL UX: clear this field's error as user types
       if (errors[field]) {
         dispatch(
           setErrors({

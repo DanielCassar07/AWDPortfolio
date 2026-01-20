@@ -33,13 +33,11 @@ export const router = createBrowserRouter([
 
       { path: "about", element: withGuards(<About />) },
 
-      // ✅ Nested routing: /projects + /projects/:projectId
+      // Nested routing: /projects + /projects/:projectId
       {
         path: "projects",
         element: withGuards(<Projects />),
-        children: [
-          { path: ":projectId", element: withGuards(<ProjectDetail />) },
-        ],
+        children: [{ path: ":projectId", element: withGuards(<ProjectDetail />) }],
       },
 
       { path: "contact", element: withGuards(<Contact />) },

@@ -44,9 +44,7 @@ describe("Contact page (form validation)", () => {
 
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
-    expect(
-      screen.getByText(/please fix the highlighted fields/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/please fix the highlighted fields/i)).toBeInTheDocument();
 
     expect(screen.getByText(/name is required/i)).toBeInTheDocument();
     expect(screen.getByText(/email is required/i)).toBeInTheDocument();
@@ -71,13 +69,9 @@ describe("Contact page (form validation)", () => {
 
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
-    expect(
-      screen.getByText(/name can only contain letters/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/name can only contain letters/i)).toBeInTheDocument();
 
-    expect(
-      screen.getByText(/enter a valid email address/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/enter a valid email address/i)).toBeInTheDocument();
   });
 
   it("submits successfully with valid values and shows success banner", async () => {

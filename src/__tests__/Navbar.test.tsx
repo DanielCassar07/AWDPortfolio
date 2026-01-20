@@ -58,18 +58,12 @@ describe("Navbar (routing behaviour)", () => {
     );
 
     // Re-query nav each time to avoid stale element references after re-render
-    expect(
-      screen.getByRole("navigation", { name: /primary/i })
-    ).not.toHaveClass("open");
+    expect(screen.getByRole("navigation", { name: /primary/i })).not.toHaveClass("open");
 
     await user.click(screen.getByRole("button", { name: /open menu/i }));
-    expect(
-      screen.getByRole("navigation", { name: /primary/i })
-    ).toHaveClass("open");
+    expect(screen.getByRole("navigation", { name: /primary/i })).toHaveClass("open");
 
     await user.click(screen.getByRole("button", { name: /close menu/i }));
-    expect(
-      screen.getByRole("navigation", { name: /primary/i })
-    ).not.toHaveClass("open");
+    expect(screen.getByRole("navigation", { name: /primary/i })).not.toHaveClass("open");
   });
 });

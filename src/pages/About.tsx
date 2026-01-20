@@ -82,8 +82,8 @@ export default function About() {
         <h1 className="h1">A bit about me</h1>
         <p className="aboutLead muted">
           I’m a Level 6 (Year 3) student at <strong>MCAST</strong> in{" "}
-          <strong>Creative Computing</strong>. I build modern web applications and enjoy clean UI,
-          solid architecture, and practical full-stack projects.
+          <strong>Creative Computing</strong>. I build modern web applications and enjoy
+          clean UI, solid architecture, and practical full-stack projects.
         </p>
 
         <div className="aboutHighlights">
@@ -115,14 +115,15 @@ export default function About() {
             Level 6 (Year 3) student in <strong>Creative Computing</strong>.
           </p>
           <p className="muted">
-            Interested in software engineering, UI/UX, and building real-world applications.
+            Interested in software engineering, UI/UX, and building real-world
+            applications.
           </p>
         </InfoCard>
 
         <InfoCard icon={<IconBriefcase />} title="Work" subtitle="PTL Limited">
           <p>
-            Working part-time at <strong>PTL Limited</strong>, gaining experience in professional
-            development workflows.
+            Working part-time at <strong>PTL Limited</strong>, gaining experience in
+            professional development workflows.
           </p>
           <p className="muted">
             Collaboration, clean code, and delivering features under real constraints.
@@ -149,12 +150,12 @@ export default function About() {
         </InfoCard>
       </div>
 
-      {/* Bottom CTA */}
+      {/* Bottom */}
       <div className="aboutCTA card section">
         <h2 className="h2">Want to see what I’ve built?</h2>
         <p className="muted" style={{ marginTop: 6 }}>
-          Check out the projects section for examples of UI work, state management, and full-stack
-          features.
+          Check out the projects section for examples of UI work, state management, and
+          full-stack features.
         </p>
         <div className="aboutCTAActions">
           <a className="btn primary" href="/projects">
