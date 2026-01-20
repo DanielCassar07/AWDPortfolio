@@ -1,22 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import Button from "../components/Button";
 
-const meta: Meta<typeof Button> = {
+const meta = {
   title: "Components/Button",
   component: Button,
-};
+} satisfies Meta<typeof Button>;
+
 export default meta;
 
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
-  args: { children: "Click me", variant: "primary" },
+export const ViewProjects: Story = {
+  args: { children: "View Projects", variant: "primary" },
 };
 
-export const Secondary: Story = {
-  args: { children: "Secondary", variant: "secondary" },
+export const Contact: Story = {
+  args: { children: "Contact", variant: "secondary" },
 };
 
 export const Disabled: Story = {
-  args: { children: "Disabled", disabled: true },
+  args: { children: "View Projects", variant: "primary", disabled: true },
 };

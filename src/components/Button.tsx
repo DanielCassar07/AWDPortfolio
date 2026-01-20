@@ -5,22 +5,16 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary";
 };
 
-export default function Button({ children, variant = "primary", style, ...rest }: Props) {
-  const base: React.CSSProperties = {
-    padding: "10px 12px",
-    borderRadius: 10,
-    border: "1px solid #d1d5db",
-    cursor: rest.disabled ? "not-allowed" : "pointer",
-    opacity: rest.disabled ? 0.6 : 1,
-  };
-
-  const variants: Record<string, React.CSSProperties> = {
-    primary: { background: "#111827", color: "white" },
-    secondary: { background: "transparent", color: "#111827" },
-  };
+export default function Button({
+  children,
+  variant = "primary",
+  className,
+  ...rest
+}: Props) {
+  const variantClass = variant === "primary" ? "btn btnPrimary" : "btn btnSecondary";
 
   return (
-    <button style={{ ...base, ...variants[variant], ...style }} {...rest}>
+    <button className={`${variantClass} ${className ?? ""}`} {...rest}>
       {children}
     </button>
   );
